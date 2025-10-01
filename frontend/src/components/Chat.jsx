@@ -6,7 +6,7 @@ const Chat = () => {
   const ws = useRef(null);
 
   useEffect(() => {
-    ws.current = new WebSocket("ws://localhost:8080");
+    ws.current = new WebSocket("wss://web-socket-101.onrender.com");
 
     ws.current.onopen = () => {
       setMessages((msgs) => [...msgs, "Connected to server"]);
