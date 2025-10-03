@@ -1,4 +1,7 @@
 // Import the ws package
+
+require('dotenv').config();
+
 const WebSocket = require('ws');
 
 // Create a WebSocket server on port 8080

@@ -1,12 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 
+const WS_URI = import.meta.env.VITE_WS_URI;
+// const WS_PORT = import.meta.env.VITE_WS_PORT; you can use ${WS_URI}:${WS_PORT} but it wont work so use one. why you ask funny, i scratch my head too. possible this is this convention!
+
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const ws = useRef(null);
 
   useEffect(() => {
-    ws.current = new WebSocket("wss://web-socket-101.onrender.com");
+    if (!WS_URI) {
+      console.error("WebSocket URI is missing");
+    } else {
+      ws.current = new WebSocket(`${WS_URI}`);
+      console.log(`Connecting to WebSocket server... via ${WS_URI}`);
+    }
 
     ws.current.onopen = () => {
       setMessages((msgs) => [...msgs, "Connected with server"]);
@@ -42,26 +50,9 @@ const Chat = () => {
   };
 
   return (
-    // <div
-    //   style={{
-    //     maxWidth: 400,
-    //     margin: "2rem auto",
-    //     border: "1px solid #ccc",
-    //     padding: 16,
-    //   }}
-    // >
-    <div className="max-w-auto mx-2 my-2 pt-10 p-4 border border-red-700 ">
-      <h2 className="text-5xl text-center font-bold">
-        Secure Chat
-      </h2>
+    <div className="flex-col min-w-[320px] max-w-auto shrink-0 mx-2 my-2 pt-10 p-4 border border-red-700">
+      <h2 className="text-5xl text-center font-bold w-full">Secure Chat</h2>
 
-      {/* <div style={{
-                minHeight: 200,
-                marginBottom: 12, 
-                background: "#f9f9f9",
-                padding: 8,
-                overflowY: "auto",
-            }}> */}
       <div className=" bg-blue-200 px-12 py-4 pt-10 m-4 overflow-y-auto rounded-2xl mt-10">
         {messages.map((msg, idx) => (
           <div key={idx} style={{ marginBottom: 8 }}>
